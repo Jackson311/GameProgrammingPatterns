@@ -76,6 +76,9 @@ namespace Command
         }
     }
 
+    /// <summary>
+    /// 撤销重做控制器
+    /// </summary>
     public class Commander
     {
         private List<ICommand> _commands = new List<ICommand>();
