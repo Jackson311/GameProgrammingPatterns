@@ -50,24 +50,98 @@ namespace Command
             Console.WriteLine("断电，关风扇");
         }
     }
+
+    class TV : IDevice
+    {
+        public void On()
+        {
+            Console.WriteLine("通电，电视");
+        }
+
+        public void Off()
+        {
+            Console.WriteLine("断电，电视");
+        }
+
+        public void ChannelUp()
+        {
+            Console.WriteLine("电视频道，切换上");
+        }
+
+        public void ChannelDown()
+        {
+            Console.WriteLine("电视频道，切换下");
+        }
+
+        public void VolumeUp()
+        {
+            Console.WriteLine("电视音量，上");
+        }
+
+        public void VolumeDown()
+        {
+            Console.WriteLine("电视音量，下");
+        }
+    }
+
+    class Radio : IDevice
+    {
+        public void On()
+        {
+            Console.WriteLine("通电，收音机");
+        }
+
+        public void Off()
+        {
+            Console.WriteLine("断电，收音机");
+        }
+
+        public void ChannelUp()
+        {
+            Console.WriteLine("收音机频道，切换上");
+        }
+
+        public void ChannelDown()
+        {
+            Console.WriteLine("收音机频道，切换下");
+        }
+
+        public void VolumeUp()
+        {
+            Console.WriteLine("收音机音量，上");
+        }
+
+        public void VolumeDown()
+        {
+            Console.WriteLine("收音机音量，下");
+        }
+    }
     
     internal class Program
     {
         public static void Main(string[] args)
         {
             /*
-             * 现在是客户端-控制器
-             * 控制器获取要控制的客户端，然后进行控制
+             * 现在是客户端-命令-控制器
+             * 现在是控制器和客户端分开了，控制器不需要知道是什么客户端是TV还是radio
+             * 只要命令里有去实现客户端的就行，而且你可以实现非常多不同的命令，同时还支持撤回等操作
              */
-            Bulb bulb = new Bulb();
-            Fan fan = new Fan();
-            Switcher switcher_0 = new Switcher(bulb);
-            switcher_0.OnButton();
-            switcher_0.OffButton();
-            Switcher switcher_1 = new Switcher(fan);
-            switcher_1.OnButton();
-            switcher_1.OffButton();
-
+            
+            TV tv = new TV();
+            Radio radio = new Radio();
+            Controller controller = new Controller();
+            
+            controller.BindSwitchCommand(new SwitchCommand(radio));
+            controller.BindChannleCommand(new ChannleCommand(radio));
+            controller.BindVolumeCommnad(new VolumeCommand(radio));
+            
+            controller.SwitchCommandExe();
+            controller.SwitchCommandUnExe();
+            controller.ChannleCommnadExe();
+            controller.ChannleCommnadUnExe();
+            controller.VolumeCommandExe();
+            controller.VolumeCommandUnExe();
+            
         }
     }
 }
